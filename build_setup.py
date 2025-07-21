@@ -11,6 +11,7 @@ import urllib.request
 import zipfile
 import shutil
 import platform
+import time
 from pathlib import Path
 
 def check_python_version():
@@ -100,23 +101,45 @@ def download_ffmpeg():
         # Create directories
         os.makedirs(ffmpeg_dir, exist_ok=True)
         
-        # Download
+        # Download with retry logic and better HTTPS handling
         zip_path = "ffmpeg_temp.zip"
-        with urllib.request.urlopen(url) as response:
-            total_size = int(response.headers.get('content-length', 0))
-            block_size = 8192
-            downloaded = 0
-            
-            with open(zip_path, 'wb') as f:
-                while True:
-                    block = response.read(block_size)
-                    if not block:
-                        break
-                    f.write(block)
-                    downloaded += len(block)
-                    if total_size > 0:
-                        percent = (downloaded / total_size) * 100
-                        print(f"\rProgress: {percent:.1f}%", end="", flush=True)
+        
+        # Setup SSL context for better HTTPS handling
+        import ssl
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+        
+        # Create request with user agent
+        request = urllib.request.Request(url, headers={
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        })
+        
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                print(f"Download attempt {attempt + 1}/{max_retries}...")
+                with urllib.request.urlopen(request, context=ssl_context) as response:
+                    total_size = int(response.headers.get('content-length', 0))
+                    block_size = 8192
+                    downloaded = 0
+                    
+                    with open(zip_path, 'wb') as f:
+                        while True:
+                            block = response.read(block_size)
+                            if not block:
+                                break
+                            f.write(block)
+                            downloaded += len(block)
+                            if total_size > 0:
+                                percent = (downloaded / total_size) * 100
+                                print(f"\rProgress: {percent:.1f}%", end="", flush=True)
+                break  # Success, exit retry loop
+            except Exception as e:
+                print(f"\nDownload attempt {attempt + 1} failed: {e}")
+                if attempt == max_retries - 1:
+                    raise  # Re-raise on final attempt
+                time.sleep(2)  # Wait before retry
         
         print("\n📦 Extracting FFmpeg...")
         

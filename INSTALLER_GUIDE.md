@@ -113,12 +113,43 @@ Edit `Waver.spec`:
 ### Common Issues
 
 #### FFmpeg Download Fails
+If the automated FFmpeg download fails during installation, you can install it manually:
+
+**Option 1: During Installer**
+1. When the installer fails to download FFmpeg, continue with installation
+2. Download FFmpeg manually after installation (see Option 2)
+
+**Option 2: Manual Installation**
 ```bash
-# Manual solution:
-1. Download ffmpeg-master-latest-win64-gpl.zip
-2. Extract to temp folder
-3. Copy bin/, doc/, presets/ to ffmpeg_bin/
+# Step 1: Download FFmpeg
+# Go to: https://github.com/BtbN/FFmpeg-Builds/releases
+# Download: ffmpeg-master-latest-win64-gpl.zip
+
+# Step 2: Extract and copy files
+1. Extract the downloaded ZIP file
+2. Navigate to the extracted folder (e.g., ffmpeg-master-latest-win64-gpl)
+3. Copy these folders to your Waver installation directory:
+   - bin/ → [Waver Install Dir]/ffmpeg_bin/bin/
+   - doc/ → [Waver Install Dir]/ffmpeg_bin/doc/
+   - presets/ → [Waver Install Dir]/ffmpeg_bin/presets/
+   - LICENSE → [Waver Install Dir]/ffmpeg_bin/LICENSE
+   - README.txt → [Waver Install Dir]/ffmpeg_bin/README.txt
+
+# Step 3: Verify installation
+# Check that ffmpeg.exe exists at:
+# [Waver Install Dir]/ffmpeg_bin/bin/ffmpeg.exe
 ```
+
+**Option 3: Use Your Own FFmpeg**
+If you already have FFmpeg installed system-wide:
+1. Copy your ffmpeg.exe to [Waver Install Dir]/ffmpeg_bin/bin/
+2. Or add your FFmpeg location to system PATH
+
+**Common Download Issues:**
+- **Corporate Firewall**: Download manually from a different network
+- **Antivirus Blocking**: Temporarily disable real-time protection
+- **PowerShell Restrictions**: Run installer as Administrator
+- **Network Issues**: Try the installer on a different internet connection
 
 #### PyInstaller Missing Modules
 ```bash

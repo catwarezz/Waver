@@ -142,7 +142,7 @@ class OptionsWidget(QWidget):
     
     def updateOptions(self):
         self.main_window.setOptions(
-            self.lightModeCheck.isChecked(),
+                self.lightModeCheck.isChecked(),
             self.openFolderCheck.isChecked(),
             auto_analyze=self.autoAnalyzeCheck.isChecked()
         )

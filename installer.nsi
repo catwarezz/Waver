@@ -8,6 +8,7 @@
 !include "LogicLib.nsh"
 !include "WinMessages.nsh"
 !include "FileFunc.nsh"
+!include "nsDialogs.nsh"
 
 ;--------------------------------
 ; General
@@ -101,6 +102,7 @@ Section "Waver Application" SecWaver
     File "CHANGELOG.md"
     File "VERSION"
     File "requirements.txt"
+    File "test_ffmpeg.py"
     
     ; Store installation folder
     WriteRegStr HKLM "Software\Waver" "InstallDir" $INSTDIR
@@ -136,19 +138,25 @@ Section "FFmpeg Binaries" SecFFmpeg
     ; Create temporary directory
     CreateDirectory "$TEMP\WaverInstaller"
     
-    ; Download FFmpeg
-    NSISdl::download "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip" "$TEMP\WaverInstaller\ffmpeg.zip"
+    ; Download FFmpeg using PowerShell with better error handling and retry logic
+    DetailPrint "Downloading FFmpeg (this may take a few minutes)..."
+    nsExec::ExecToLog 'powershell -NoProfile -ExecutionPolicy Bypass -Command "& {$maxRetries = 3; $attempt = 0; do { $attempt++; try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = ''SilentlyContinue''; Write-Host \"Attempt $attempt/$maxRetries - Starting download...\"; $webClient = New-Object System.Net.WebClient; $webClient.Headers.Add(''User-Agent'', ''Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36''); $webClient.DownloadFile(''https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip'', ''$env:TEMP\WaverInstaller\ffmpeg.zip''); Write-Host ''Download completed successfully''; exit 0 } catch { Write-Host \"Attempt $attempt failed: $_\"; if ($attempt -lt $maxRetries) { Start-Sleep -Seconds 2 } } } while ($attempt -lt $maxRetries); Write-Host ''All download attempts failed''; exit 1}"'
     Pop $0
-    StrCmp $0 "success" +3
-        MessageBox MB_OK "FFmpeg download failed: $0"
-        Goto SkipFFmpegDownload
+    StrCmp $0 "0" +5
+        DetailPrint "Primary download failed, trying fallback method..."
+        ; Fallback: Try using bitsadmin (older but more reliable on some systems)
+        nsExec::ExecToLog 'bitsadmin /transfer "FFmpeg Download" /priority normal "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip" "$TEMP\WaverInstaller\ffmpeg.zip"'
+        Pop $0
+        StrCmp $0 "0" +3
+            MessageBox MB_OK "FFmpeg download failed with both methods. Please check your internet connection and firewall settings.$\n$\nYou can also download FFmpeg manually and place it in the installation directory."
+            Goto SkipFFmpegDownload
     
     DetailPrint "Extracting FFmpeg..."
     
-    ; Extract FFmpeg
-    nsisunz::UnzipToLog "$TEMP\WaverInstaller\ffmpeg.zip" "$TEMP\WaverInstaller\"
+    ; Extract FFmpeg using PowerShell
+    nsExec::ExecToLog 'powershell -command "Expand-Archive -Path \"$TEMP\\WaverInstaller\\ffmpeg.zip\" -DestinationPath \"$TEMP\\WaverInstaller\\\" -Force"'
     Pop $0
-    StrCmp $0 "success" +3
+    StrCmp $0 "0" +3
         MessageBox MB_OK "FFmpeg extraction failed"
         Goto SkipFFmpegDownload
     
@@ -172,6 +180,11 @@ Section "FFmpeg Binaries" SecFFmpeg
     
     ; Cleanup
     RMDir /r "$TEMP\WaverInstaller"
+    
+    ; Final verification and user guidance
+    IfFileExists "$INSTDIR\ffmpeg_bin\bin\ffmpeg.exe" +3 0
+        MessageBox MB_OK "FFmpeg was not installed automatically.$\n$\nWaver will still work, but you may need to install FFmpeg manually for full functionality.$\n$\nSee the README file for manual installation instructions."
+        DetailPrint "FFmpeg not installed - manual installation may be required"
     
 SectionEnd
 

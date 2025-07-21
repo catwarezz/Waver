@@ -119,11 +119,12 @@ echo Creating portable package...
 if not exist "release\Waver_v1.1.0_Portable" mkdir "release\Waver_v1.1.0_Portable"
 xcopy "dist\Waver_v1.1.0\*" "release\Waver_v1.1.0_Portable\" /E /I /H /Y
 
-REM Copy documentation to release
+REM Copy documentation and tools to release
 copy "README.md" "release\"
 copy "CHANGELOG.md" "release\"
 copy "RELEASE_v1.1.0.md" "release\"
 copy "VERSION" "release\"
+copy "test_ffmpeg.py" "release\"
 
 REM Create ZIP for portable version
 echo Creating portable ZIP...

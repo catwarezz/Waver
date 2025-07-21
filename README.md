@@ -90,7 +90,7 @@ See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
 ## 🤝 Contributing
 
-Feel free to provide feedback and request new or improved features.
+Feel free to provide feedback and request new or improved features. 
 Please report any issues to catwarez@proton.me
 
 ## 📄 License
