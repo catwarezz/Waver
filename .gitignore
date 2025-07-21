@@ -1,0 +1,153 @@
+# Waver v1.1.0 .gitignore
+# Excludes large files, build artifacts, and temporary files
+
+# FFmpeg binaries (too large for git)
+ffmpeg_bin/
+*.exe
+*.dll
+
+# Build artifacts
+build/
+dist/
+release/
+*.spec
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer files
+*.msi
+*.nsi.log
+WaverInstaller_*.exe
+*.zip
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+*.kate-swp
+.spyderproject
+.spyproject
+
+# Python virtual environments
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# User-specific files
+*.user
+*.suo
+*.sln.docstates
+
+# NSIS installer logs
+makensis.log
+
+# License file (auto-generated)
+LICENSE.txt
+
+# Checksum files
+*.sha256
+*.md5 

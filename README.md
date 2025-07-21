@@ -13,20 +13,53 @@ Waver is a modern desktop application for downloading and converting YouTube vid
 
 ## 🚀 Installation
 
-### Prerequisites
-- Python 3.8 or higher
-- FFmpeg (included in the package)
+### Option 1: Windows Installer (Recommended)
+1. Download `WaverInstaller_v1.1.0.exe` from the [Releases](https://github.com/catwarezz/Waver/releases) page
+2. Run the installer as administrator
+3. Follow the installation wizard
+4. The installer will automatically download FFmpeg during installation
+5. Launch Waver from the Start Menu or Desktop shortcut
 
-### Setup
-1. Clone or download this repository
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run the application:
-   ```bash
-   python Waver.py
-   ```
+### Option 2: Portable Version
+1. Download `Waver_v1.1.0_Portable.zip` from the [Releases](https://github.com/catwarezz/Waver/releases) page
+2. Extract to any folder
+3. Run `Waver.exe`
+4. No installation required - run from anywhere!
+
+### Option 3: From Source (Developers)
+
+#### Prerequisites
+- Python 3.8 or higher
+- Git (optional)
+
+#### Quick Setup
+```bash
+# Clone the repository
+git clone https://github.com/catwarezz/Waver.git
+cd Waver
+
+# Run the automated setup script
+python build_setup.py
+```
+
+#### Manual Setup
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Download FFmpeg (Windows only)
+python setup.py --download-ffmpeg
+
+# Run the application
+python Waver.py
+```
+
+#### Building Your Own Installer
+```bash
+# Install NSIS (https://nsis.sourceforge.io/)
+# Then run the build script
+build_installer.bat
+```
 
 ## 📋 Requirements
 
