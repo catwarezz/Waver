@@ -1,23 +1,8 @@
 # -*- mode: python ; coding: utf-8 -*-
-# Waver v1.1.0 PyInstaller Specification
-# This file configures how PyInstaller bundles the Waver application
+# Waver v1.1.0 PyInstaller Specification (Simplified)
 
-import os
-import sys
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules
-
-# Application information
-APP_NAME = "Waver"
-APP_VERSION = "1.1.0"
-SCRIPT_PATH = "Waver.py"
-
-# Collect data files for various packages
-librosa_datas = collect_data_files('librosa')
-scipy_datas = collect_data_files('scipy')
-
-# Data files to include in the bundle
+# Basic data files
 datas = [
-    # Application resources
     ('music', 'music'),
     ('UI_Photos', 'UI_Photos'),
     ('ffmpeg_bin/bin', 'ffmpeg_bin/bin'),
@@ -25,153 +10,39 @@ datas = [
     ('ffmpeg_bin/presets', 'ffmpeg_bin/presets'),
     ('ffmpeg_bin/LICENSE', 'ffmpeg_bin/'),
     ('ffmpeg_bin/README.txt', 'ffmpeg_bin/'),
-    
-    # Documentation and version files
     ('README.md', '.'),
     ('CHANGELOG.md', '.'),
     ('RELEASE_v1.1.0.md', '.'),
     ('VERSION', '.'),
     ('requirements.txt', '.'),
-    
-    # Include package data
-    *librosa_datas,
-    *scipy_datas,
 ]
 
-# Hidden imports (modules PyInstaller might miss)
+# Essential hidden imports
 hiddenimports = [
-    # PyQt6 modules
     'PyQt6.QtCore',
     'PyQt6.QtGui', 
     'PyQt6.QtWidgets',
     'PyQt6.QtMultimedia',
-    
-    # Audio processing
     'librosa',
-    'librosa.core',
-    'librosa.feature',
-    'librosa.onset',
-    'librosa.beat',
-    'librosa.util',
-    'librosa.filters',
-    'librosa.fft',
-    'librosa.segment',
-    'librosa.decompose',
-    'librosa.effects',
     'numpy',
-    'numpy.random',
     'scipy',
-    'scipy.signal',
-    'scipy.sparse',
-    'scipy.sparse.csgraph',
-    'scipy.spatial.distance',
-    'scipy.ndimage',
-    'scipy.io',
-    
-    # FFmpeg and multimedia
     'yt_dlp',
-    'yt_dlp.extractor',
-    'yt_dlp.downloader',
-    'yt_dlp.postprocessor',
-    
-    # Other dependencies
     'packaging',
-    'packaging.version',
-    'packaging.specifiers',
-    'packaging.requirements',
     'certifi',
     'urllib3',
     'requests',
-    'chardet',
-    'idna',
-    'mutagen',
-    'pydub',
+    'numba',
+    'joblib',
     'soundfile',
     'resampy',
-    'numba',
-    'llvmlite',
-    'joblib',
-    'decorator',
-    'audioread',
     'pooch',
     'lazy_loader',
     'soxr',
-    'typing_extensions',
 ]
 
-# Modules to exclude (to reduce bundle size)
-excludes = [
-    # Development and testing
-    'pytest',
-    'unittest',
-    'test',
-    'tests',
-    '_pytest',
-    
-    # Documentation
-    'sphinx',
-    'docutils',
-    'setuptools',
-    'distutils',
-    'wheel',
-    'pip',
-    
-    # Jupyter/IPython
-    'IPython',
-    'jupyter',
-    'notebook',
-    'ipykernel',
-    'zmq',
-    
-    # Matplotlib (not needed for audio-only)
-    'matplotlib',
-    'tkinter',
-    '_tkinter',
-    'Tkinter',
-    
-    # Other GUI frameworks
-    'PySide2',
-    'PySide6', 
-    'PyQt5',
-    'wx',
-    
-    # Server/web frameworks
-    'flask',
-    'django',
-    'tornado',
-    'twisted',
-    
-    # Scientific computing (if not needed)
-    'pandas',
-    'sklearn',
-    'sympy',
-    
-    # Image processing
-    'PIL',
-    'Pillow',
-    'cv2',
-    
-    # Crypto/security (if not needed)
-    'cryptography',
-    'OpenSSL',
-    
-    # XML processing
-    'xml',
-    'lxml',
-    'xmltodict',
-    
-    # Other
-    'pdb',
-    'pydoc',
-    'doctest',
-    'argparse',
-    'gettext',
-    'locale',
-]
-
-# Analysis step
+# Analysis
 a = Analysis(
-    [SCRIPT_PATH],
+    ['Waver.py'],
     pathex=[],
     binaries=[],
     datas=datas,
@@ -179,36 +50,37 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=excludes,
+    excludes=[
+        'matplotlib',
+        'tkinter',
+        'PIL',
+        'pandas',
+        'sklearn',
+        'jupyter',
+        'IPython',
+        'pytest',
+        'sphinx',
+    ],
     noarchive=False,
-    optimize=0,
 )
 
-# Remove duplicate files
 pyz = PYZ(a.pure)
 
-# Create executable
 exe = EXE(
     pyz,
     a.scripts,
     [],
     exclude_binaries=True,
-    name=APP_NAME,
+    name='Waver',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=False,  # GUI application, no console window
+    console=False,
     disable_windowed_traceback=False,
-    argv_emulation=False,
-    target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
-    icon='UI_Photos/favicon.ico',  # Application icon
-    version=None,
+    icon='UI_Photos/favicon.ico',
 )
 
-# Create distribution directory
 coll = COLLECT(
     exe,
     a.binaries,
@@ -216,5 +88,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name=f'{APP_NAME}_v{APP_VERSION}',
+    name='Waver_v1.1.0',
 ) 

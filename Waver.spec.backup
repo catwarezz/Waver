@@ -1,0 +1,222 @@
+# -*- mode: python ; coding: utf-8 -*-
+# Waver v1.1.0 PyInstaller Specification
+# This file configures how PyInstaller bundles the Waver application
+
+import os
+import sys
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+
+# Application information
+APP_NAME = "Waver"
+APP_VERSION = "1.1.0"
+SCRIPT_PATH = "Waver.py"
+
+# Data files to include in the bundle
+datas = [
+    # Application resources
+    ('music', 'music'),
+    ('UI_Photos', 'UI_Photos'),
+    ('ffmpeg_bin/bin', 'ffmpeg_bin/bin'),
+    ('ffmpeg_bin/doc', 'ffmpeg_bin/doc'),
+    ('ffmpeg_bin/presets', 'ffmpeg_bin/presets'),
+    ('ffmpeg_bin/LICENSE', 'ffmpeg_bin/'),
+    ('ffmpeg_bin/README.txt', 'ffmpeg_bin/'),
+    
+    # Documentation and version files
+    ('README.md', '.'),
+    ('CHANGELOG.md', '.'),
+    ('RELEASE_v1.1.0.md', '.'),
+    ('VERSION', '.'),
+    ('requirements.txt', '.'),
+]
+
+# Collect data files for packages (try-catch to avoid errors)
+try:
+    librosa_datas = collect_data_files('librosa')
+    datas.extend(librosa_datas)
+except:
+    pass
+
+try:
+    scipy_datas = collect_data_files('scipy')
+    datas.extend(scipy_datas)
+except:
+    pass
+
+# Hidden imports (modules PyInstaller might miss)
+hiddenimports = [
+    # PyQt6 modules
+    'PyQt6.QtCore',
+    'PyQt6.QtGui', 
+    'PyQt6.QtWidgets',
+    'PyQt6.QtMultimedia',
+    
+    # Audio processing
+    'librosa',
+    'librosa.core',
+    'librosa.feature',
+    'librosa.onset',
+    'librosa.beat',
+    'librosa.util',
+    'librosa.filters',
+    'librosa.fft',
+    'librosa.segment',
+    'librosa.decompose',
+    'librosa.effects',
+    'numpy',
+    'numpy.random',
+    'scipy',
+    'scipy.signal',
+    'scipy.sparse',
+    'scipy.sparse.csgraph',
+    'scipy.spatial.distance',
+    'scipy.ndimage',
+    'scipy.io',
+    
+    # FFmpeg and multimedia
+    'yt_dlp',
+    'yt_dlp.extractor',
+    'yt_dlp.downloader',
+    'yt_dlp.postprocessor',
+    
+    # Other dependencies
+    'packaging',
+    'packaging.version',
+    'packaging.specifiers',
+    'packaging.requirements',
+    'certifi',
+    'urllib3',
+    'requests',
+    'chardet',
+    'idna',
+    'mutagen',
+    'pydub',
+    'soundfile',
+    'resampy',
+    'numba',
+    'llvmlite',
+    'joblib',
+    'decorator',
+    'audioread',
+    'pooch',
+    'lazy_loader',
+    'soxr',
+    'typing_extensions',
+]
+
+# Modules to exclude (to reduce bundle size)
+excludes = [
+    # Development and testing
+    'pytest',
+    'unittest',
+    'test',
+    'tests',
+    '_pytest',
+    
+    # Documentation
+    'sphinx',
+    'docutils',
+    'wheel',
+    'pip',
+    
+    # Jupyter/IPython
+    'IPython',
+    'jupyter',
+    'notebook',
+    'ipykernel',
+    'zmq',
+    
+    # Matplotlib (not needed for audio-only)
+    'matplotlib',
+    'tkinter',
+    '_tkinter',
+    'Tkinter',
+    
+    # Other GUI frameworks
+    'PySide2',
+    'PySide6', 
+    'PyQt5',
+    'wx',
+    
+    # Server/web frameworks
+    'flask',
+    'django',
+    'tornado',
+    'twisted',
+    
+    # Scientific computing (if not needed)
+    'pandas',
+    'sklearn',
+    'sympy',
+    
+    # Image processing
+    'PIL',
+    'Pillow',
+    'cv2',
+    
+    # Crypto/security (if not needed)
+    'cryptography',
+    'OpenSSL',
+    
+    # XML processing
+    'xml',
+    'lxml',
+    'xmltodict',
+    
+    # Other
+    'pdb',
+    'pydoc',
+    'doctest',
+    'gettext',
+    'locale',
+]
+
+# Analysis step
+a = Analysis(
+    [SCRIPT_PATH],
+    pathex=[],
+    binaries=[],
+    datas=datas,
+    hiddenimports=hiddenimports,
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=excludes,
+    noarchive=False,
+    optimize=0,
+)
+
+# Remove duplicate files
+pyz = PYZ(a.pure)
+
+# Create executable
+exe = EXE(
+    pyz,
+    a.scripts,
+    [],
+    exclude_binaries=True,
+    name=APP_NAME,
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=False,  # GUI application, no console window
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+    icon='UI_Photos/favicon.ico',  # Application icon
+    version=None,
+)
+
+# Create distribution directory
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name=f'{APP_NAME}_v{APP_VERSION}',
+) 

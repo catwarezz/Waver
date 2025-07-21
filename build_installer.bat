@@ -48,7 +48,10 @@ echo ================================================
 if exist "build" rmdir /s /q "build"
 if exist "dist" rmdir /s /q "dist"
 if exist "__pycache__" rmdir /s /q "__pycache__"
-if exist "*.spec" del "*.spec"
+REM Clean up any auto-generated .spec files, but keep our main Waver.spec
+for %%f in (*.spec) do (
+    if /i not "%%f"=="Waver.spec" del "%%f"
+)
 
 echo.
 echo Step 5: Building executable with PyInstaller...

@@ -10,7 +10,9 @@ ffmpeg_bin/
 build/
 dist/
 release/
+# Exclude all .spec files except our main one
 *.spec
+!Waver.spec
 *.pyc
 __pycache__/
 *.pyo
@@ -24,7 +26,6 @@ venv.bak/
 
 # PyInstaller
 *.manifest
-*.spec
 
 # Installer files
 *.msi

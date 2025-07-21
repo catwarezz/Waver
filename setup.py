@@ -156,66 +156,6 @@ class CustomInstallCommand:
         # Install dependencies
         install_dependencies()
 
-# Setup configuration
-setup(
-    name="waver",
-    version=VERSION,
-    description=DESCRIPTION,
-    long_description=LONG_DESCRIPTION,
-    long_description_content_type="text/plain",
-    author=AUTHOR,
-    author_email=AUTHOR_EMAIL,
-    url=URL,
-    packages=find_packages(),
-    py_modules=["Waver"],
-    install_requires=INSTALL_REQUIRES,
-    extras_require={
-        "build": BUILD_REQUIRES,
-    },
-    python_requires=">=3.8",
-    entry_points={
-        "console_scripts": [
-            "waver=Waver:main",
-        ],
-    },
-    include_package_data=True,
-    package_data={
-        "": [
-            "music/*.mp3",
-            "UI_Photos/*",
-            "ffmpeg_bin/bin/*",
-            "ffmpeg_bin/doc/*",
-            "ffmpeg_bin/presets/*",
-            "ffmpeg_bin/LICENSE",
-            "ffmpeg_bin/README.txt",
-            "*.md",
-            "VERSION",
-            "requirements.txt",
-        ],
-    },
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: End Users/Desktop",
-        "Topic :: Multimedia :: Sound/Audio :: Conversion",
-        "Topic :: Multimedia :: Video :: Conversion",
-        "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Operating System :: Microsoft :: Windows",
-        "Environment :: Win32 (MS Windows)",
-    ],
-    keywords="youtube downloader audio video converter mp3 wav mp4 bpm key detection",
-    project_urls={
-        "Bug Reports": f"{URL}/issues",
-        "Source": URL,
-        "Documentation": f"{URL}#readme",
-    },
-)
-
 # Custom commands for manual execution
 if __name__ == "__main__":
     import argparse
@@ -245,4 +185,64 @@ if __name__ == "__main__":
     else:
         print("Waver v1.1.0 Setup Script")
         print("Use --help for available options")
-        print("For normal installation, run: pip install .") 
+        print("For normal installation, run: pip install .")
+else:
+    # Setup configuration (only when imported as module)
+    setup(
+        name="waver",
+        version=VERSION,
+        description=DESCRIPTION,
+        long_description=LONG_DESCRIPTION,
+        long_description_content_type="text/plain",
+        author=AUTHOR,
+        author_email=AUTHOR_EMAIL,
+        url=URL,
+        packages=find_packages(),
+        py_modules=["Waver"],
+        install_requires=INSTALL_REQUIRES,
+        extras_require={
+            "build": BUILD_REQUIRES,
+        },
+        python_requires=">=3.8",
+        entry_points={
+            "console_scripts": [
+                "waver=Waver:main",
+            ],
+        },
+        include_package_data=True,
+        package_data={
+            "": [
+                "music/*.mp3",
+                "UI_Photos/*",
+                "ffmpeg_bin/bin/*",
+                "ffmpeg_bin/doc/*",
+                "ffmpeg_bin/presets/*",
+                "ffmpeg_bin/LICENSE",
+                "ffmpeg_bin/README.txt",
+                "*.md",
+                "VERSION",
+                "requirements.txt",
+            ],
+        },
+        classifiers=[
+            "Development Status :: 5 - Production/Stable",
+            "Intended Audience :: End Users/Desktop",
+            "Topic :: Multimedia :: Sound/Audio :: Conversion",
+            "Topic :: Multimedia :: Video :: Conversion",
+            "License :: OSI Approved :: MIT License",
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
+            "Programming Language :: Python :: 3.12",
+            "Operating System :: Microsoft :: Windows",
+            "Environment :: Win32 (MS Windows)",
+        ],
+        keywords="youtube downloader audio video converter mp3 wav mp4 bpm key detection",
+        project_urls={
+            "Bug Reports": f"{URL}/issues",
+            "Source": URL,
+            "Documentation": f"{URL}#readme",
+        },
+    ) 
