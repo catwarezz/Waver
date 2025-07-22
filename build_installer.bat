@@ -125,6 +125,7 @@ copy "CHANGELOG.md" "release\"
 copy "RELEASE_v1.1.0.md" "release\"
 copy "VERSION" "release\"
 copy "test_ffmpeg.py" "release\"
+copy "manual_ffmpeg_install.bat" "release\"
 
 REM Create ZIP for portable version
 echo Creating portable ZIP...

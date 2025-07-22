@@ -84,6 +84,23 @@ build_installer.bat
 - **Light/Dark Mode**: Toggle between themes
 - **Custom Download Location**: Set your preferred download directory
 
+## 🛠️ Troubleshooting
+
+### Installer Hangs During FFmpeg Download
+If the installer gets stuck downloading or extracting FFmpeg:
+
+1. **Wait patiently** - Large file extraction can take 10-15 minutes
+2. **Run as Administrator** - Right-click installer and "Run as administrator"
+3. **Temporarily disable antivirus** - Some antivirus software blocks the extraction
+4. **Use manual installation**:
+   - Let the installer finish (even if FFmpeg fails)
+   - Navigate to installation folder (e.g., `C:\Program Files\Waver`)
+   - Run `manual_ffmpeg_install.bat` as Administrator
+5. **Manual download** - See `INSTALLER_GUIDE.md` for complete instructions
+
+### FFmpeg Test Tool
+Run `test_ffmpeg.py` in your installation directory to verify FFmpeg is working correctly.
+
 ## 📝 Version History
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history.

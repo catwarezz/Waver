@@ -112,7 +112,23 @@ Edit `Waver.spec`:
 
 ### Common Issues
 
-#### FFmpeg Download Fails
+#### FFmpeg Download Fails or Installer Hangs
+If the automated FFmpeg download fails or the installer hangs during the download/extraction phase, you have several options:
+
+**Option 0: Use the Manual Installation Script (Recommended)**
+1. Complete the installation (let it finish even if FFmpeg fails)
+2. Navigate to your Waver installation directory (e.g., `C:\Program Files\Waver`)
+3. Run `manual_ffmpeg_install.bat` as Administrator
+4. The script will automatically download and install FFmpeg for you
+5. If the script also fails, it will provide manual instructions
+
+**Common Causes of Installer Hanging:**
+- **Large file extraction taking too long** - Wait 10-15 minutes, especially on slower systems
+- **Antivirus interference** - Temporarily disable real-time protection during installation
+- **PowerShell execution policy** - Run installer as Administrator
+- **Corporate firewall** - Try installing from a different network or use manual script
+- **Insufficient disk space** - Ensure you have at least 500MB free space in temp directory
+
 If the automated FFmpeg download fails during installation, you can install it manually:
 
 **Option 1: During Installer**
